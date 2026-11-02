@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- CAMBIA el nombre de la tienda aca y en el <h1> -->
+  <title>Panadería La Espiga</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+  <header class="barra">
+    <h1 class="marca">Panadería La Espiga</h1>
+    <div class="sesion">
+      <span id="saludo"></span>
+      <button id="btn-ingresar" class="btn btn-claro" onclick="abrirModal()">Ingresar</button>
+      <button id="btn-salir" class="btn btn-claro oculto" onclick="cerrarSesion()">Salir</button>
+      <button id="btn-pedidos" class="btn btn-claro oculto" onclick="verMisPedidos()">Mis pedidos</button>
+      <button id="btn-admin" class="btn btn-claro oculto" onclick="alternarAdmin()">Administrar</button>
+      <button class="btn btn-carrito" onclick="alternarCarrito()">
+        Carrito <span id="contador" class="contador">0</span>
+      </button>
+    </div>
+  </header>
+
+  <div id="mensaje" class="mensaje oculto"></div>
+
+  <main class="contenido">
+    <!-- El catálogo y las categorías se rellenan desde la API al cargar app.js. -->
+    <label class="buscador"><span>Buscar productos</span><input id="buscar" type="search" placeholder="Pan, medialunas, tortas…"><button class="btn btn-principal" onclick="buscarProductos()">Buscar</button></label>
+    <nav id="categorias" class="categorias"></nav>
+    <section id="productos" class="grilla">
+      <p class="vacio">Cargando productos...</p>
+    </section>
+  </main>
+
+  <!-- Este panel es una interfaz básica; la autorización real se aplica en el backend. -->
+  <section id="admin" class="contenido oculto">
+    <h2>Administración de productos</h2>
+    <form id="form-producto" onsubmit="guardarProducto(event)">
+      <input id="admin-nombre" placeholder="Nombre" required maxlength="120">
+      <input id="admin-descripcion" placeholder="Descripción">
+      <input id="admin-precio" type="number" min="0" step="0.01" placeholder="Precio" required>
+      <input id="admin-stock" type="number" min="0" step="1" placeholder="Stock" required>
+      <select id="admin-categoria" required></select>
+      <input id="admin-imagen" type="url" placeholder="URL https de imagen">
+      <button class="btn btn-principal" type="submit">Crear producto</button>
+    </form>
+    <div id="admin-productos"></div>
+    <h2>Categorías</h2>
+    <form id="form-categoria" onsubmit="guardarCategoria(event)"><input id="admin-categoria-nombre" placeholder="Nueva categoría" required maxlength="80"><button class="btn btn-principal">Crear categoría</button></form>
+    <div id="admin-categorias"></div>
+    <h2>Pedidos</h2><div id="admin-pedidos"></div>
+  </section>
+  <section id="pedidos" class="contenido oculto"><h2>Mis pedidos</h2><div id="lista-pedidos"></div></section>
+
+  <!-- CARRITO: panel lateral -->
+  <aside id="carrito" class="carrito oculto">
+    <div class="carrito-cabecera">
+      <h2>Tu carrito</h2>
+      <button class="btn-cerrar" onclick="alternarCarrito()">×</button>
+    </div>
+    <ul id="carrito-lista" class="carrito-lista"></ul>
+    <div class="carrito-pie">
+      <p>Total estimado: <strong id="carrito-total">$0</strong></p>
+      <button class="btn btn-principal" onclick="comprar()">Comprar</button>
+    </div>
+  </aside>
+
+  <!-- LOGIN / REGISTRO: ventana modal -->
+  <div id="modal" class="modal oculto">
+    <div class="modal-caja">
+      <button class="btn-cerrar" onclick="cerrarModal()">×</button>
+
+      <form id="form-login" onsubmit="iniciarSesion(event)">
+        <h2>Ingresar</h2>
+        <input id="login-email" type="email" placeholder="Email" required>
+        <input id="login-password" type="password" placeholder="Contraseña" required>
+        <button class="btn btn-principal" type="submit">Ingresar</button>
+        <p class="cambiar">¿No tenés cuenta? <a href="#" onclick="mostrarRegistro(true)">Registrate</a></p>
+      </form>
+
+      <form id="form-registro" class="oculto" onsubmit="registrar(event)">
+        <h2>Crear cuenta</h2>
+        <input id="reg-nombre" type="text" placeholder="Nombre" required>
+        <input id="reg-email" type="email" placeholder="Email" required>
+        <input id="reg-password" type="password" placeholder="Contraseña (mínimo 6)" minlength="6" required>
+        <button class="btn btn-principal" type="submit">Registrarme</button>
+        <p class="cambiar">¿Ya tenés cuenta? <a href="#" onclick="mostrarRegistro(false)">Ingresá</a></p>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
